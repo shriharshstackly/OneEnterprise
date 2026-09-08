@@ -1,0 +1,23 @@
+import { api } from '@/lib/api/apiClient'
+import { API_ENDPOINTS } from '@/lib/api/apiEndpoints'
+import type { LoginCredentials, LoginResponse } from '@/types/auth.types'
+import type { ApiResponse } from '@/types/api.types'
+
+export const authService = {
+  async login(credentials: LoginCredentials): Promise<LoginResponse> {
+    const response = await api.post<ApiResponse<LoginResponse>>(
+      API_ENDPOINTS.AUTH.LOGIN,
+      credentials
+    )
+    return response.data.data
+  },
+
+  async logout(): Promise<void> {
+    await api.post(API_ENDPOINTS.AUTH.LOGOUT)
+  },
+
+  async getMe(): Promise<LoginResponse['user']> {
+    const response = await api.get<ApiResponse<LoginResponse['user']>>(API_ENDPOINTS.AUTH.ME)
+    return response.data.data
+  },
+}

@@ -14,7 +14,7 @@ function createSeedUsers(): StoredUser[] {
       id: 'user-1',
       email: 'admin@oneenterprise.com',
       password: 'admin123',
-      firstName: 'Alex',
+      firstName: 'Dharanivel',
       lastName: 'Admin',
       roles: [ROLES.SUPER_ADMIN],
       permissions: ALL_PERMISSIONS,

@@ -1,154 +1,109 @@
 import { Clock, Lock, Shield } from 'lucide-react'
 
-/** Positions in SVG coords — inset so long labels (WORKFLOW, ANALYTICS) stay inside */
-const MODULES = [
-  { label: 'HRMS', x: 100, y: 48, side: 'left' as const },
-  { label: 'CRM', x: 72, y: 130, side: 'left' as const },
-  { label: 'ERP', x: 104, y: 212, side: 'left' as const },
-  { label: 'FINANCE', x: 400, y: 48, side: 'right' as const },
-  { label: 'WORKFLOW', x: 418, y: 130, side: 'right' as const },
-  { label: 'ANALYTICS', x: 396, y: 212, side: 'right' as const },
-] as const
-
-const CX = 250
-const CY = 130
+const PILLARS = ['Secure', 'Scalable', 'Future-Ready'] as const
 
 export function AuthBrandPanel() {
   return (
-    <aside className="relative hidden h-full w-1/2 min-w-0 flex-col overflow-hidden bg-[#0a0e27] px-8 py-7 lg:flex xl:px-12">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
-          backgroundSize: '48px 48px',
-        }}
-      />
+    <aside className="relative hidden h-full w-1/2 min-w-0 flex-col overflow-hidden bg-[#f4f8fc] px-8 py-7 lg:flex xl:px-12">
+      {/* Soft sky — light wash only (no dark blue blotch) */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse 60% 50% at 50% 55%, rgba(99,102,241,0.18) 0%, transparent 70%)',
+            'radial-gradient(ellipse 55% 40% at 78% 12%, rgba(210,228,255,0.35) 0%, transparent 70%), linear-gradient(180deg, #fbfcfe 0%, #f6f9fc 45%, #f2f6fb 100%)',
         }}
       />
 
-      <div className="relative z-10 flex shrink-0 items-center gap-2.5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-[#9fe870] to-[#e8d44d] text-[11px] font-bold tracking-tight text-[#0a0e27]">
-          1E
-        </div>
-        <span className="text-[15px] font-semibold tracking-tight text-white">
-          One Enterprise
-        </span>
+      {/* Misty mountain landscape — matches Figma atmospheric background */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[28%] z-0 overflow-hidden">
+        <img
+          src="/logos/auth-mountains.png"
+          alt=""
+          className="absolute inset-0 h-full w-full scale-105 object-cover object-[center_40%] opacity-90"
+          draggable={false}
+        />
+        {/* Soft blend into sky */}
+        <div
+          className="absolute inset-x-0 top-0 h-[42%]"
+          style={{
+            background:
+              'linear-gradient(180deg, #f4f8fc 0%, rgba(244,248,252,0.85) 35%, rgba(244,248,252,0) 100%)',
+          }}
+        />
+        {/* Soft floor fade for footer readability */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[28%]"
+          style={{
+            background:
+              'linear-gradient(0deg, #f2f6fb 0%, rgba(242,246,251,0.75) 45%, rgba(242,246,251,0) 100%)',
+          }}
+        />
       </div>
 
-      <div className="relative z-10 mt-8 max-w-lg shrink-0 xl:mt-10">
-        <p className="text-[11px] font-medium tracking-[0.14em] text-[#7dd3c7]">
-          CLOUD PLATFORM · HRMS · CRM · ERP · FINANCE · AI
+      {/* Logo */}
+      <div className="relative z-10 shrink-0">
+        <img
+          src="/logos/logo-stackly.svg"
+          alt="Stackly"
+          className="h-9 w-auto"
+        />
+      </div>
+
+      {/* Hero copy */}
+      <div className="relative z-10 mt-5 max-w-xl shrink-0 xl:mt-6">
+        <p className="text-[11px] font-medium tracking-[0.14em] text-slate-400 uppercase">
+          Cloud Platform – HRMS – CRM – ERP – Finance – AI
         </p>
-        <h1 className="mt-3 text-[2.15rem] font-bold leading-[1.12] tracking-tight xl:text-[2.5rem]">
-          <span className="block text-white">Every operation.</span>
-          <span className="block bg-gradient-to-r from-[#e8a04a] to-[#f0c56a] bg-clip-text text-transparent">
-            One sign-in.
+        <h1 className="mt-2.5 text-[1.9rem] font-bold leading-[1.15] tracking-tight text-[#0b1f4d] xl:text-[2.35rem]">
+          <span className="block">One identity.</span>
+          <span className="block">
+            <span className="bg-gradient-to-r from-[#3b82f6] via-[#6366f1] to-[#8b5cf6] bg-clip-text text-transparent">
+              Infinite
+            </span>{' '}
+            Potential.
           </span>
         </h1>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-white/55 xl:text-[15px]">
-          HR, sales, procurement, finance and your AI copilot — running on one
-          identity, one policy, one audit trail.
+        <p className="mt-2.5 max-w-md text-sm leading-relaxed text-slate-500">
+          A unified platform to connect your people, data and operations —
+          securely, everywhere.
         </p>
       </div>
 
-      <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center py-4">
-        <svg
-          viewBox="0 0 520 260"
-          className="h-full max-h-[240px] w-full max-w-[520px]"
-          preserveAspectRatio="xMidYMid meet"
-          aria-hidden
-        >
-          <defs>
-            <radialGradient id="aiGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#818cf8" stopOpacity="0.55" />
-              <stop offset="70%" stopColor="#6366f1" stopOpacity="0.12" />
-              <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
-            </radialGradient>
-            <filter id="softGlow">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+      {/* Spacer so footer stays pinned; graphic is absolutely placed like Figma */}
+      <div className="relative z-10 min-h-0 flex-1" aria-hidden />
 
-          <circle cx={CX} cy={CY} r="72" fill="url(#aiGlow)" />
-
-          {MODULES.map((node, i) => {
-            const dashed = i % 2 === 1
-            return (
-              <path
-                key={`line-${node.label}`}
-                d={`M ${CX} ${CY} Q ${(CX + node.x) / 2} ${node.y < CY ? node.y - 18 : node.y + 18} ${node.x} ${node.y}`}
-                fill="none"
-                stroke={dashed ? 'rgba(148,163,184,0.35)' : 'rgba(94,234,212,0.45)'}
-                strokeWidth="1.25"
-                strokeDasharray={dashed ? '4 5' : undefined}
-              />
-            )
-          })}
-
-          {MODULES.map((node) => {
-            const isLeft = node.side === 'left'
-            return (
-              <g key={node.label}>
-                <circle cx={node.x} cy={node.y} r="5" fill="#818cf8" opacity="0.9" />
-                <circle cx={node.x} cy={node.y} r="9" fill="#818cf8" opacity="0.2" />
-                <text
-                  x={isLeft ? node.x - 14 : node.x + 14}
-                  y={node.y + 4}
-                  textAnchor={isLeft ? 'end' : 'start'}
-                  fill="rgba(226,232,240,0.75)"
-                  fontSize="11"
-                  fontWeight="500"
-                  letterSpacing="0.04em"
-                >
-                  {node.label}
-                </text>
-              </g>
-            )
-          })}
-
-          <circle
-            cx={CX}
-            cy={CY}
-            r="28"
-            fill="#12163a"
-            stroke="#a5b4fc"
-            strokeWidth="1.5"
-            filter="url(#softGlow)"
-          />
-          <circle
-            cx={CX}
-            cy={CY}
-            r="34"
-            fill="none"
-            stroke="rgba(251,191,36,0.25)"
-            strokeWidth="1"
-          />
-          <text
-            x={CX}
-            y={CY + 5}
-            textAnchor="middle"
-            fill="#e0e7ff"
-            fontSize="13"
-            fontWeight="700"
-            letterSpacing="0.08em"
-          >
-            AI
-          </text>
-        </svg>
+      {/* Orbit graphic — larger + biased right to match Figma */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-[7.5rem] top-[11rem] z-[5] flex items-center justify-end pr-2 xl:bottom-[8rem] xl:top-[12rem] xl:pr-3">
+        <img
+          src="/logos/auth-orbit.svg"
+          alt=""
+          className="h-[90%] w-auto max-w-[min(540px,80%)] object-contain object-right drop-shadow-sm xl:h-[94%] xl:max-w-[min(580px,84%)]"
+          draggable={false}
+        />
       </div>
 
-      <footer className="relative z-10 shrink-0 border-t border-white/10 pt-4">
-        <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[11px] text-white/45">
+      {/* Values + tagline */}
+      <div className="relative z-10 mb-3 flex shrink-0 items-end justify-between gap-4">
+        <div>
+          <div className="mb-2 h-0.5 w-8 rounded-full bg-[#3b82f6]" />
+          <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] font-semibold tracking-wide text-[#0b1f4d]">
+            {PILLARS.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <p className="text-right text-[10px] font-medium leading-[1.35] tracking-[0.14em] text-slate-400 uppercase">
+          Built for
+          <br />
+          a brighter
+          <br />
+          tomorrow
+        </p>
+      </div>
+
+      {/* Trust badges */}
+      <footer className="relative z-10 shrink-0 border-t border-slate-200/80 pt-3">
+        <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] text-slate-400">
           <li className="flex items-center gap-1.5">
             <Shield className="h-3 w-3" strokeWidth={1.75} />
             SOC 2 Type II

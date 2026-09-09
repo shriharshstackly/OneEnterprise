@@ -68,6 +68,26 @@ export const router = createBrowserRouter([
         path: 'user-management',
         element: placeholder('User Management'),
       },
+      {
+        path: 'audit-logs',
+        element: placeholder('Audit Logs'),
+      },
+      {
+        path: 'notifications',
+        element: placeholder('Notifications'),
+      },
+      {
+        path: 'backup-recovery',
+        element: placeholder('Backup & Recovery'),
+      },
+      {
+        path: 'reports',
+        element: placeholder('Reports'),
+      },
+      {
+        path: 'security-center',
+        element: placeholder('Security Center'),
+      },
     ],
   },
 ])

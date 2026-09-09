@@ -87,13 +87,13 @@ export function Sidebar() {
   return (
     <aside className="relative flex h-screen w-[268px] min-h-0 shrink-0 flex-col overflow-hidden bg-[#0a0e27] text-white">
       {/* Header: logo + badge */}
-      <div className="shrink-0 px-5 pt-6 pb-4">
+      <div className="shrink-0 px-5 pt-3 pb-2">
         <img
           src="/icons/sidebar/logo-stackly-white.svg"
           alt="Stackly"
-          className="h-12 w-auto max-w-[200px] object-contain object-left"
+          className="h-14 w-auto max-w-[220px] object-contain object-left scale-105 origin-left"
         />
-        <div className="mt-3.5 inline-flex rounded-full border border-white/10 bg-[#13253a] px-2.5 py-1">
+        <div className="mt-1.5 inline-flex rounded-full border border-white/10 bg-[#13253a] px-2.5 py-1">
           <span className="text-[9px] font-semibold tracking-[0.08em] text-[#7dd3c7] uppercase">
             Platform Administration
           </span>

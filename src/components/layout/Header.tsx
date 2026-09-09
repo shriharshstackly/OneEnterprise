@@ -1,62 +1,48 @@
-import { Home } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
-import { useMemo } from 'react'
-import { Breadcrumbs } from './Breadcrumbs'
+import { Bell, Search, Settings } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { UserMenu } from '@/components/navigation/UserMenu'
-import { useAuth } from '@/features/auth/hooks/useAuth'
 import { ROUTES } from '@/lib/constants/routes'
 
-const pageTitles: Record<string, string> = {
-  dashboard: 'Dashboard',
-}
-
-function getGreeting() {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'Good morning'
-  if (hour < 17) return 'Good afternoon'
-  return 'Good evening'
-}
-
+/** Top bar only — search (left) + actions (right). Breadcrumbs live below in content. */
 export function Header() {
-  const { user } = useAuth()
-  const location = useLocation()
-
-  const title = useMemo(() => {
-    const segments = location.pathname.split('/').filter(Boolean)
-    const last = segments[segments.length - 1]
-    if (!last) return 'Dashboard'
-    return pageTitles[last] || last.charAt(0).toUpperCase() + last.slice(1)
-  }, [location.pathname])
-
-  const displayName = user?.firstName?.toLowerCase() || 'user'
+  const navigate = useNavigate()
 
   return (
-    <header className="shrink-0 bg-white">
-      <div className="flex items-start justify-between gap-4 px-6 pt-5 pb-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-brand-navy">{title}</h1>
-          <p className="mt-0.5 text-sm text-muted-foreground">
-            {getGreeting()}, {displayName}
-          </p>
+    <header className="shrink-0 border-b border-slate-200/80 bg-white">
+      <div className="flex items-center justify-between gap-4 px-6 py-3">
+        <div className="w-full max-w-md min-w-0 flex-1 lg:max-w-lg">
+          <label className="relative block">
+            <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              type="search"
+              placeholder="Search tenants, users, settings, audit logs..."
+              className="h-10 w-full rounded-full border-0 bg-slate-100/90 pr-14 pl-10 text-sm text-[#0b1f4d] outline-none placeholder:text-slate-400 focus:bg-slate-100 focus:ring-2 focus:ring-[#3b82f6]/20"
+            />
+            <kbd className="pointer-events-none absolute top-1/2 right-3 hidden -translate-y-1/2 items-center rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-400 sm:inline-flex">
+              ⌘ K
+            </kbd>
+          </label>
         </div>
-        <div className="flex items-center gap-3">
+
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-700"
+            aria-label="Notifications"
+          >
+            <Bell className="h-4 w-4" strokeWidth={1.75} />
+            <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-red-500" />
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-700"
+            aria-label="Settings"
+            onClick={() => navigate(ROUTES.SETTINGS)}
+          >
+            <Settings className="h-4 w-4" strokeWidth={1.75} />
+          </button>
           <UserMenu />
         </div>
-      </div>
-
-      <div
-        className="breadcrumb-bar flex items-center gap-2 rounded-bl-xl bg-brand-navy px-6 py-2.5 text-sm text-white"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(47,107,255,0.12) 8px, rgba(47,107,255,0.12) 16px)',
-        }}
-      >
-        <Home className="h-3.5 w-3.5 shrink-0 opacity-90" />
-        <Link to={ROUTES.DASHBOARD} className="opacity-90 hover:opacity-100">
-          Home
-        </Link>
-        <span className="opacity-50">&gt;</span>
-        <Breadcrumbs variant="onPrimary" />
       </div>
     </header>
   )

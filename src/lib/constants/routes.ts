@@ -2,4 +2,13 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   DASHBOARD: '/dashboard',
+  PLATFORM_ADMIN: '/platform-administration',
+  GLOBAL_DASHBOARD: '/global-dashboard',
+  PLATFORM_CONFIG: '/platform-configuration',
+  PLATFORM_BRANDING: '/platform-branding',
+  FEATURE_MANAGEMENT: '/feature-management',
+  LICENSE_MANAGEMENT: '/license-management',
+  SETTINGS: '/settings',
+  COMPANY_SETUP: '/company-setup',
+  USER_MANAGEMENT: '/user-management',
 } as const

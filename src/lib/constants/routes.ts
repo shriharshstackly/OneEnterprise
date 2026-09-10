@@ -11,4 +11,9 @@ export const ROUTES = {
   SETTINGS: '/settings',
   COMPANY_SETUP: '/company-setup',
   USER_MANAGEMENT: '/user-management',
+  AUDIT_LOGS: '/audit-logs',
+  NOTIFICATIONS: '/notifications',
+  BACKUP: '/backup-recovery',
+  REPORTS: '/reports',
+  SECURITY_CENTER: '/security-center',
 } as const

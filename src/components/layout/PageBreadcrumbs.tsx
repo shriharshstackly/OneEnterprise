@@ -18,10 +18,10 @@ function findNavLabel(pathname: string): string | null {
 export function PageBreadcrumbs() {
   const location = useLocation()
 
-  const currentLabel = useMemo(
-    () => findNavLabel(location.pathname) || 'Dashboard',
-    [location.pathname]
-  )
+  const currentLabel = useMemo(() => {
+    if (location.pathname === ROUTES.DASHBOARD) return 'Dashboard'
+    return findNavLabel(location.pathname) || 'Dashboard'
+  }, [location.pathname])
 
   return (
     <nav className="mb-4 flex items-center gap-1.5 text-sm">

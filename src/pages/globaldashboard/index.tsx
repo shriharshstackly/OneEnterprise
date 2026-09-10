@@ -103,7 +103,7 @@ export default function GlobalDashboard() {
 
   return (
     <main className="min-h-full px-0 py-2">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto">
         <header className="mb-6">
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Global Dashboard</h1>
           <p className="mt-1 text-sm text-muted-foreground">

@@ -23,6 +23,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { PageContainer } from '@/components/layout/PageContainer'
 import { useState } from 'react'
 
 type Stat = {
@@ -102,16 +103,15 @@ export default function GlobalDashboard() {
   }
 
   return (
-    <main className="min-h-full px-0 py-2">
-      <div className="mx-auto max-w-6xl">
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Global Dashboard</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Track performance, engagement, and growth across all your social platforms in one place.
-          </p>
-        </header>
+    <PageContainer className="space-y-6">
+      <header>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">Global Dashboard</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Track performance, engagement, and growth across all your social platforms in one place.
+        </p>
+      </header>
 
-        <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6">
           <section aria-labelledby="overview-heading">
             <SectionTitle>Platform Overview</SectionTitle>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -262,7 +262,6 @@ export default function GlobalDashboard() {
             </button>
           </div>
         </div>
-      </div>
-    </main>
+    </PageContainer>
   )
 }

@@ -5,6 +5,7 @@ import { HomeRedirect } from './HomeRedirect'
 import { ROUTES } from '@/lib/constants/routes'
 import Login from '@/pages/auth/Login'
 import Dashboard from '@/pages/dashboard/Dashboard'
+import GlobalDashboard from '@/pages/globaldashboard'
 import { PlaceholderPage } from '@/pages/PlaceholderPage'
 
 function placeholder(title: string) {
@@ -38,7 +39,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'global-dashboard',
-        element: placeholder('Global Dashboard'),
+        element: <GlobalDashboard />,
       },
       {
         path: 'platform-configuration',

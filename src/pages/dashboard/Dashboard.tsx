@@ -37,7 +37,7 @@ const overview = [
   },
   {
     label: 'Active Users',
-    value: '78,930',
+    value: '78,920',
     hint: '4,215 online now',
     hintClass: 'text-blue-600',
     icon: Check,
@@ -72,55 +72,55 @@ const quickNav: {
   icon: LucideIcon
   path: string
 }[] = [
-  {
-    title: 'User Management',
-    description: 'Invite, roles and access control',
-    icon: Users,
-    path: ROUTES.USER_MANAGEMENT,
-  },
-  {
-    title: 'Platform Settings',
-    description: 'Identity, region and defaults',
-    icon: Settings,
-    path: ROUTES.SETTINGS,
-  },
-  {
-    title: 'License Management',
-    description: 'Seats, renewals and expiry',
-    icon: KeyRound,
-    path: ROUTES.LICENSE_MANAGEMENT,
-  },
-  {
-    title: 'Audit Logs',
-    description: 'Security and change history',
-    icon: ScrollText,
-    path: ROUTES.AUDIT_LOGS,
-  },
-  {
-    title: 'Notifications',
-    description: 'Alerts, digests and channels',
-    icon: Bell,
-    path: ROUTES.NOTIFICATIONS,
-  },
-  {
-    title: 'Backup & Recovery',
-    description: 'Snapshots and restore points',
-    icon: HardDrive,
-    path: ROUTES.BACKUP,
-  },
-  {
-    title: 'Reports',
-    description: 'Usage, licenses and activity',
-    icon: FileText,
-    path: ROUTES.REPORTS,
-  },
-  {
-    title: 'Security Center',
-    description: 'Policies, lockouts and MFA',
-    icon: Shield,
-    path: ROUTES.SECURITY_CENTER,
-  },
-]
+    {
+      title: 'User Management',
+      description: 'Invite, roles and access control',
+      icon: Users,
+      path: ROUTES.USER_MANAGEMENT,
+    },
+    {
+      title: 'Platform Settings',
+      description: 'Identity, region and defaults',
+      icon: Settings,
+      path: ROUTES.SETTINGS,
+    },
+    {
+      title: 'License Management',
+      description: 'Seats, renewals and expiry',
+      icon: KeyRound,
+      path: ROUTES.LICENSE_MANAGEMENT,
+    },
+    {
+      title: 'Audit Logs',
+      description: 'Security and change history',
+      icon: ScrollText,
+      path: ROUTES.AUDIT_LOGS,
+    },
+    {
+      title: 'Notifications',
+      description: 'Alerts, digests and channels',
+      icon: Bell,
+      path: ROUTES.NOTIFICATIONS,
+    },
+    {
+      title: 'Backup & Recovery',
+      description: 'Snapshots and restore points',
+      icon: HardDrive,
+      path: ROUTES.BACKUP,
+    },
+    {
+      title: 'Reports',
+      description: 'Usage, licenses and activity',
+      icon: FileText,
+      path: ROUTES.REPORTS,
+    },
+    {
+      title: 'Security Center',
+      description: 'Policies, lockouts and MFA',
+      icon: Shield,
+      path: ROUTES.SECURITY_CENTER,
+    },
+  ]
 
 const alerts = [
   {

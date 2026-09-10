@@ -8,6 +8,21 @@ import { ForgotPasswordStep } from '@/features/auth/components/steps/ForgotPassw
 import { CheckEmailStep } from '@/features/auth/components/steps/CheckEmailStep'
 import { LockedStep } from '@/features/auth/components/steps/LockedStep'
 import { SuccessStep } from '@/features/auth/components/steps/SuccessStep'
+import {
+  RegisterOrgStep,
+  type OrgFormData,
+} from '@/features/auth/components/steps/RegisterOrgStep'
+import {
+  RegisterAdminStep,
+  type AdminFormData,
+} from '@/features/auth/components/steps/RegisterAdminStep'
+import {
+  RegisterReviewStep,
+  type ReviewAgreements,
+} from '@/features/auth/components/steps/RegisterReviewStep'
+import { RegisterSuccessStep } from '@/features/auth/components/steps/RegisterSuccessStep'
+import { StepProgressBar } from '@/features/auth/components/StepProgressBar'
+import { AuthBackButton } from '@/features/auth/components/auth-ui'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { authService } from '@/features/auth/services/authService'
 import { setToken, setRefreshToken } from '@/lib/auth/auth'
@@ -24,9 +39,36 @@ type AuthView =
   | 'check-email'
   | 'locked'
   | 'success'
+  | 'register-org'
+  | 'register-admin'
+  | 'register-review'
+  | 'register-success'
 
 const MAX_ATTEMPTS = 5
 const LOCK_SECONDS = 15 * 60
+
+const initialOrgData: OrgFormData = {
+  orgName: '',
+  orgCode: '',
+  orgType: '',
+  industry: '',
+  companySize: '',
+  country: '',
+  state: '',
+  city: '',
+  timeZone: '',
+  logo: null,
+}
+
+const initialAdminData: AdminFormData = {
+  firstName: '',
+  lastName: '',
+  officialEmail: '',
+  mobileNumber: '',
+  username: '',
+  password: '',
+  confirmPassword: '',
+}
 
 export default function Login() {
   const navigate = useNavigate()
@@ -47,6 +89,10 @@ export default function Login() {
     accessToken: string
     refreshToken: string
   } | null>(null)
+
+  // Registration state
+  const [orgData, setOrgData] = useState<OrgFormData>(initialOrgData)
+  const [adminData, setAdminData] = useState<AdminFormData>(initialAdminData)
 
   useEffect(() => {
     if (view !== 'locked') return
@@ -127,7 +173,6 @@ export default function Login() {
     if (!pendingUser) return
     setIsLoading(true)
     try {
-      // Demo: accept any 6-digit code after password succeeds
       void _code
       void rememberDevice
       void password
@@ -148,16 +193,54 @@ export default function Login() {
     setPassword('')
   }
 
+  const handleCreateAccountSubmit = (_agreements: ReviewAgreements) => {
+    setIsLoading(true)
+    window.setTimeout(() => {
+      setIsLoading(false)
+      toastSuccess('Account created!', `Your organization ${orgData.orgName || ''} is ready.`)
+      setView('register-success')
+    }, 800)
+  }
+
   const centered =
-    view === 'check-email' || view === 'locked' || view === 'success'
+    view === 'check-email' ||
+    view === 'locked' ||
+    view === 'success' ||
+    view === 'register-success'
+
+  const isRegister =
+    view === 'register-org' || view === 'register-admin' || view === 'register-review'
+
+  // Registration step number for the progress bar
+  const regStep =
+    view === 'register-org' ? 1 : view === 'register-admin' ? 2 : view === 'register-review' ? 3 : 0
+
+  // Back navigation for registration steps
+  const regBackNav =
+    view === 'register-admin'
+      ? () => setView('register-org')
+      : view === 'register-review'
+        ? () => setView('register-admin')
+        : undefined
+
+  // Sticky top bar — rendered outside the scrollable area by AuthShell
+  const regTopBar = isRegister ? (
+    <div>
+      {regBackNav && (
+        <AuthBackButton onClick={regBackNav} />
+      )}
+      <StepProgressBar currentStep={regStep} totalSteps={3} />
+    </div>
+  ) : undefined
 
   return (
-    <AuthShell centered={centered}>
+    <AuthShell centered={centered} wide={isRegister} topBar={regTopBar}>
       {view === 'identify' && (
         <IdentifyStep
           workspace={workspace}
           email={email}
           onContinue={handleIdentify}
+          onCreateAccount={() => setView('register-org')}
         />
       )}
 
@@ -222,6 +305,54 @@ export default function Login() {
       )}
 
       {view === 'success' && <SuccessStep />}
+
+      {/* Registration Flow Steps */}
+      {view === 'register-org' && (
+        <RegisterOrgStep
+          initialData={orgData}
+          onContinue={(data) => {
+            setOrgData(data)
+            setView('register-admin')
+          }}
+          onBackToSignIn={resetToIdentify}
+        />
+      )}
+
+      {view === 'register-admin' && (
+        <RegisterAdminStep
+          orgName={orgData.orgName}
+          initialData={adminData}
+          onContinue={(data) => {
+            setAdminData(data)
+            setView('register-review')
+          }}
+          onBackToSignIn={resetToIdentify}
+        />
+      )}
+
+      {view === 'register-review' && (
+        <RegisterReviewStep
+          orgName={orgData.orgName}
+          isLoading={isLoading}
+          onSubmit={handleCreateAccountSubmit}
+          onBackToSignIn={resetToIdentify}
+        />
+      )}
+
+      {view === 'register-success' && (
+        <RegisterSuccessStep
+          orgName={orgData.orgName}
+          workspaceCode={orgData.orgCode}
+          onGoToSignIn={() => {
+            setWorkspace(orgData.orgCode.toLowerCase())
+            setEmail(adminData.officialEmail)
+            setView('identify')
+          }}
+          onResendVerification={() => {
+            toastSuccess('Verification sent', 'A new verification link has been sent to your email.')
+          }}
+        />
+      )}
     </AuthShell>
   )
 }

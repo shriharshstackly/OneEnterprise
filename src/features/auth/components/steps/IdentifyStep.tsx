@@ -14,6 +14,7 @@ interface IdentifyStepProps {
   workspace: string
   email: string
   onContinue: (data: { workspace: string; email: string }) => void
+  onCreateAccount?: () => void
   isLoading?: boolean
 }
 
@@ -72,6 +73,7 @@ export function IdentifyStep({
   workspace: initialWorkspace,
   email: initialEmail,
   onContinue,
+  onCreateAccount,
   isLoading,
 }: IdentifyStepProps) {
   const [workspace, setWorkspace] = useState(initialWorkspace)
@@ -104,7 +106,7 @@ export function IdentifyStep({
               id="workspace"
               value={workspace}
               onChange={(e) => setWorkspace(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
-              placeholder="your-workspace"
+              placeholder="acmecorp"
               className="min-w-0 flex-1 bg-white px-3 text-sm text-[#0a0e27] outline-none placeholder:text-slate-400"
               autoComplete="organization"
             />
@@ -158,7 +160,7 @@ export function IdentifyStep({
       </div>
 
       <p className="mt-5 text-center text-sm text-slate-500">
-        New to One Enterprise? <AuthLink>Talk to sales</AuthLink>
+        New to One Enterprise? <AuthLink onClick={onCreateAccount}>Create an account</AuthLink>
       </p>
     </div>
   )

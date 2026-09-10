@@ -37,6 +37,13 @@
   --color-brand-blue: #2f6bff;
   --color-brand-sky: hsl(221 100% 96%);
   --color-brand-soft: hsl(230 35% 97%);
+  --color-blue: var(--color-primary);
+  --color-blue-foreground: var(--color-primary-foreground);
+  --color-success: hsl(155 62% 45%);
+  --color-warning: hsl(42 95% 52%);
+  --color-chart-1: hsl(221 100% 58%);
+  --color-chart-2: hsl(250 70% 62%);
+  --color-chart-3: hsl(155 62% 45%);
 
   --radius: 0.625rem;
 }
@@ -69,6 +76,17 @@
   --color-sidebar-accent-foreground: hsl(210 40% 98%);
   --color-sidebar-border: hsl(234 30% 20%);
   --color-sidebar-ring: hsl(221 100% 62%);
+  --color-brand-navy: var(--color-sidebar);
+  --color-brand-blue: var(--color-primary);
+  --color-brand-sky: var(--color-accent);
+  --color-brand-soft: var(--color-background);
+  --color-blue: var(--color-primary);
+  --color-blue-foreground: var(--color-primary-foreground);
+  --color-success: hsl(155 55% 48%);
+  --color-warning: hsl(42 90% 55%);
+  --color-chart-1: hsl(221 100% 62%);
+  --color-chart-2: hsl(250 70% 65%);
+  --color-chart-3: hsl(155 55% 48%);
 }
 
 @layer base {

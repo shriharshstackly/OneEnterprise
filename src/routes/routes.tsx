@@ -6,6 +6,7 @@ import { ROUTES } from '@/lib/constants/routes'
 import Login from '@/pages/auth/Login'
 import Dashboard from '@/pages/dashboard/Dashboard'
 import { PlaceholderPage } from '@/pages/PlaceholderPage'
+import PlatformAdministration from '@/pages/platformadministration/PlatformAdministration'
 
 function placeholder(title: string) {
   return <PlaceholderPage title={title} />
@@ -34,7 +35,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'platform-administration',
-        element: placeholder('Platform Administration'),
+        element: <PlatformAdministration />,
       },
       {
         path: 'global-dashboard',

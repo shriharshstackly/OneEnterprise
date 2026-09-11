@@ -8,6 +8,8 @@ import Dashboard from '@/pages/dashboard/Dashboard'
 import GlobalDashboard from '@/pages/globaldashboard'
 import { PlaceholderPage } from '@/pages/PlaceholderPage'
 import PlatformAdministration from '@/pages/platformadministration/PlatformAdministration'
+import LicenseManagement from '@/pages/licence-management/LicenseManagement'
+import FeatureManagement from '@/pages/feature-management/FeatureManagement'
 
 function placeholder(title: string) {
   return <PlaceholderPage title={title} />
@@ -52,11 +54,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'feature-management',
-        element: placeholder('Feature Management'),
+        element: <FeatureManagement />,
       },
       {
         path: 'license-management',
-        element: placeholder('License Management'),
+        element: <LicenseManagement/>,
       },
       {
         path: 'settings',

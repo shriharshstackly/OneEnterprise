@@ -29,7 +29,7 @@ import { cn } from '@/lib/utils/cn'
 const overview = [
   {
     label: 'Total Users',
-    value: '96,412',
+    value: '96,413',
     hint: '+1.8% this month',
     hintClass: 'text-emerald-600',
     icon: Users,

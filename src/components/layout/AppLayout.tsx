@@ -1,16 +1,19 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { PageBreadcrumbs } from './PageBreadcrumbs'
 
 export function AppLayout() {
+  const location = useLocation()
+  const isNotificationsPage = location.pathname === '/notifications'
+
   return (
     <div className="flex h-screen overflow-hidden bg-[#f3f5f9]">
       <Sidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header />
         <main className="flex-1 overflow-y-auto bg-[#f3f5f9] px-6 pt-4 pb-6">
-          <PageBreadcrumbs />
+          {!isNotificationsPage && <PageBreadcrumbs />}
           <Outlet />
         </main>
       </div>

@@ -1,6 +1,7 @@
-import { Bell, Search, Settings } from 'lucide-react'
+import { Search, Settings } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { UserMenu } from '@/components/navigation/UserMenu'
+import { NotificationDropdown } from './NotificationDropdown'
 import { ROUTES } from '@/lib/constants/routes'
 
 /** Top bar only — search (left) + actions (right). Breadcrumbs live below in content. */
@@ -25,14 +26,7 @@ export function Header() {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          <button
-            type="button"
-            className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-700"
-            aria-label="Notifications"
-          >
-            <Bell className="h-4 w-4" strokeWidth={1.75} />
-            <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-red-500" />
-          </button>
+          <NotificationDropdown />
           <button
             type="button"
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-700"

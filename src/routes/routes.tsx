@@ -11,6 +11,7 @@ import PlatformAdministration from '@/pages/platformadministration/PlatformAdmin
 import LicenseManagement from '@/pages/licence-management/LicenseManagement'
 import FeatureManagement from '@/pages/feature-management/FeatureManagement'
 import PlatformConfiguration from '@/pages/PlatformConfiguration/PlatformConfiguration'
+import Notifications from '@/pages/notifications/Notifications'
 
 function placeholder(title: string) {
   return <PlaceholderPage title={title} />
@@ -80,7 +81,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'notifications',
-        element: placeholder('Notifications'),
+        element: <Notifications />,
       },
       {
         path: 'backup-recovery',

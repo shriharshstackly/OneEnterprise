@@ -18,6 +18,7 @@ import {
   ShieldPlus,
   UploadCloud,
   X,
+  type LucideIcon,
 } from 'lucide-react'
 import { PageContainer } from '@/components/layout/PageContainer'
 import { Button } from '@/components/ui/button'
@@ -26,54 +27,65 @@ import { cn } from '@/lib/utils/cn'
 
 type ModalType = 'smtp' | 'sms' | 'api' | null
 
+function useFields<T extends Record<string, string>>(initial: T) {
+  const [values, setValues] = useState(initial)
+  const set = (field: keyof T, value: string) => setValues((v) => ({ ...v, [field]: value }))
+  return [values, set] as const
+}
+
 export default function PlatformConfiguration() {
   const [modal, setModal] = useState<ModalType>(null)
   const [modalSaved, setModalSaved] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showApiKey, setShowApiKey] = useState(false)
-  const [showApiSecret, setShowApiSecret] = useState(false)
-  const [showSmsSid, setShowSmsSid] = useState(false)
-  const [showSmsToken, setShowSmsToken] = useState(false)
   const [saved, setSaved] = useState(true)
+  const [visible, setVisible] = useState<Record<string, boolean>>({})
+  const toggleVisible = (key: string) => setVisible((v) => ({ ...v, [key]: !v[key] }))
 
-  const [platformName, setPlatformName] = useState('Java Enterprise Suite')
-  const [platformUrl, setPlatformUrl] = useState('https://app.javasuite.enterprise')
-  const [timezone, setTimezone] = useState('UTC +05:30 (India Standard Time)')
-  const [language, setLanguage] = useState('ENGLISH')
+  const [basic, setBasic] = useFields({
+    name: 'Java Enterprise Suite',
+    url: 'https://app.javasuite.enterprise',
+  })
 
-  const [smtpHost, setSmtpHost] = useState('smtp.stackly.com')
-  const [smtpPort, setSmtpPort] = useState('587')
-  const [smtpUsername, setSmtpUsername] = useState('noreply@stackly.com')
-  const [smtpPassword, setSmtpPassword] = useState('password123')
-  const [encryption, setEncryption] = useState('TLS')
-  const [fromEmail, setFromEmail] = useState('noreply@stackly.com')
-  const [fromName, setFromName] = useState('Stackly Platform')
+  const [regional, setRegional] = useFields({
+    timezone: 'UTC +05:30 (India Standard Time)',
+    language: 'ENGLISH',
+  })
 
-  const [smsProvider, setSmsProvider] = useState('Stackly')
-  const [smsGatewayName, setSmsGatewayName] = useState('Stackly Primary')
-  const [smsApiUrl, setSmsApiUrl] = useState('https://api.stackly.com/2010-04-01')
-  const [smsAccountSid, setSmsAccountSid] = useState('ACxxxxxxxxxxxxxxxxxxxxxxxx')
-  const [smsSender, setSmsSender] = useState('+14155552671')
-  const [smsTimeout, setSmsTimeout] = useState('30')
-  const [smsAuthToken, setSmsAuthToken] = useState('xxxxxxxxxxxxxxxxxxxxxxxx')
-  const [smsMessagingSid, setSmsMessagingSid] = useState('MGxxxxxxxxxxxxxxxxxxxxxxxx')
+  const [smtp, setSmtp] = useFields({
+    host: 'smtp.stackly.com',
+    port: '587',
+    username: 'noreply@stackly.com',
+    password: 'password123',
+    encryption: 'TLS',
+    fromEmail: 'noreply@stackly.com',
+    fromName: 'Stackly Platform',
+  })
+
+  const [sms, setSms] = useFields({
+    provider: 'Stackly',
+    gatewayName: 'Stackly Primary',
+    apiUrl: 'https://api.stackly.com/2010-04-01',
+    accountSid: 'ACxxxxxxxxxxxxxxxxxxxxxxxx',
+    sender: '+14155552671',
+    timeout: '30',
+    authToken: 'xxxxxxxxxxxxxxxxxxxxxxxx',
+    messagingSid: 'MGxxxxxxxxxxxxxxxxxxxxxxxx',
+  })
   const [smsEnabled, setSmsEnabled] = useState(true)
 
-  const [apiGatewayName, setApiGatewayName] = useState('Main API Gateway')
-  const [apiEnvironment, setApiEnvironment] = useState('Production')
-  const [apiBaseUrl, setApiBaseUrl] = useState('https://api.stackly.com/V1')
-  const [apiVersion, setApiVersion] = useState('V1')
-  const [authenticationType, setAuthenticationType] = useState('API Key')
-  const [apiKey, setApiKey] = useState('xxxxxxxxxxxxxxxxxxxx')
-  const [apiSecret, setApiSecret] = useState('xxxxxxxxxxxxxxxxxxxx')
-  const [headerName, setHeaderName] = useState('X-API-Key')
-  const [requestTimeout, setRequestTimeout] = useState('30')
-  const [retryAttempts, setRetryAttempts] = useState('3')
-  const [rateLimit, setRateLimit] = useState('100')
+  const [api, setApi] = useFields({
+    gatewayName: 'Main API Gateway',
+    environment: 'Production',
+    baseUrl: 'https://api.stackly.com/V1',
+    version: 'V1',
+    authType: 'API Key',
+    apiKey: 'xxxxxxxxxxxxxxxxxxxx',
+    apiSecret: 'xxxxxxxxxxxxxxxxxxxx',
+    headerName: 'X-API-Key',
+    requestTimeout: '30',
+    retryAttempts: '3',
+    rateLimit: '100',
+  })
   const [apiEnabled, setApiEnabled] = useState(true)
-
-  const handleSave = () => setSaved(true)
-  const handleCancel = () => setSaved(false)
 
   const openModal = (type: ModalType) => {
     setModal(type)
@@ -90,10 +102,10 @@ export default function PlatformConfiguration() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={handleCancel}>
+          <Button variant="outline" onClick={() => setSaved(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSave}>
+          <Button onClick={() => setSaved(true)}>
             <Download className="h-3.5 w-3.5" strokeWidth={2} />
             Save Changes
           </Button>
@@ -107,8 +119,8 @@ export default function PlatformConfiguration() {
           <Card>
             <CardTitle icon={Settings} title="Basic Configuration" />
             <div className="mt-5 space-y-4">
-              <Field label="Platform Name" value={platformName} onChange={setPlatformName} />
-              <Field label="Platform URL" value={platformUrl} onChange={setPlatformUrl} />
+              <Field label="Platform Name" value={basic.name} onChange={(v) => setBasic('name', v)} />
+              <Field label="Platform URL" value={basic.url} onChange={(v) => setBasic('url', v)} />
             </div>
           </Card>
 
@@ -117,8 +129,8 @@ export default function PlatformConfiguration() {
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <SelectField
                 label="Default Time Zone"
-                value={timezone}
-                onChange={setTimezone}
+                value={regional.timezone}
+                onChange={(v) => setRegional('timezone', v)}
                 options={[
                   'UTC +05:30 (India Standard Time)',
                   'UTC +00:00 (Coordinated Universal Time)',
@@ -128,81 +140,67 @@ export default function PlatformConfiguration() {
               />
               <SelectField
                 label="Default Language"
-                value={language}
-                onChange={setLanguage}
+                value={regional.language}
+                onChange={(v) => setRegional('language', v)}
                 options={['ENGLISH', 'HINDI', 'KANNADA', 'FRENCH']}
               />
             </div>
           </Card>
-
-          <Card>
-            <CardTitle icon={Network} title="Communication & Integration" />
-            <div className="mt-3 divide-y divide-border">
-              <IntegrationRow
-                title="SMTP Configuration"
-                description="Manage email server settings"
-                onClick={() => openModal('smtp')}
-              />
-              <IntegrationRow
-                title="SMS Gateway"
-                description="Twilio integration settings"
-                onClick={() => openModal('sms')}
-              />
-              <IntegrationRow
-                title="API Gateway"
-                description="External system access tokens"
-                onClick={() => openModal('api')}
-              />
-            </div>
-          </Card>
-
-          <div className="flex gap-3 rounded-xl border border-border bg-muted/60 p-4">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={1.75} />
-            <div>
-              <p className="text-sm font-semibold text-foreground">Deployment Note</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                Changes to Core Platform configurations may require a service restart for integrated
-                modules to reflect the updates completely.
-              </p>
-            </div>
-          </div>
         </div>
 
-        <div className="space-y-6">
-          <Card className="p-0">
-            <div className="flex items-center gap-2 border-b border-border px-5 py-4">
-              <ShieldHalf className="h-4 w-4 text-primary" strokeWidth={1.75} />
-              <h2 className="text-sm font-semibold text-foreground">Security Handling</h2>
-            </div>
+        <Card className="p-0">
+          <div className="flex items-center gap-2 border-b border-border px-5 py-4">
+            <ShieldHalf className="h-4 w-4 text-primary" strokeWidth={1.75} />
+            <h2 className="text-sm font-semibold text-foreground">Security Handling</h2>
+          </div>
 
-            <div className="space-y-5 px-5 py-5">
-              <SecurityRow
-                icon={ShieldCheck}
-                title="Configuration version control"
-                description="All changes are tracked and can be rolled back."
-              />
-              <SecurityRow
-                icon={LockKeyhole}
-                title="Encryption of sensitive credentials"
-                description="API keys and passwords are AES-256 encrypted."
-              />
-              <SecurityRow
-                icon={FileSearch}
-                title="Audit logs"
-                description="Comprehensive logging of administrative actions."
-              />
-            </div>
+          <div className="space-y-5 px-5 py-5">
+            <SecurityRow
+              icon={ShieldCheck}
+              title="Configuration version control"
+              description="All changes are tracked and can be rolled back."
+            />
+            <SecurityRow
+              icon={LockKeyhole}
+              title="Encryption of sensitive credentials"
+              description="API keys and passwords are AES-256 encrypted."
+            />
+            <SecurityRow
+              icon={FileSearch}
+              title="Audit logs"
+              description="Comprehensive logging of administrative actions."
+            />
+          </div>
 
-            <div className="flex items-center gap-3 border-t border-border px-5 py-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-primary">
-                <ShieldPlus className="h-4.5 w-4.5" strokeWidth={1.75} />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-foreground">System Health</p>
-                <p className="text-xs font-medium text-success">Optimal State</p>
-              </div>
+          <div className="flex items-center gap-3 border-t border-border px-5 py-4">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-primary">
+              <ShieldPlus className="h-4.5 w-4.5" strokeWidth={1.75} />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-foreground">System Health</p>
+              <p className="text-xs font-medium text-success">Optimal State</p>
             </div>
-          </Card>
+          </div>
+        </Card>
+      </div>
+
+      <Card>
+        <CardTitle icon={Network} title="Communication & Integration" />
+        <div className="mt-3 divide-y divide-border">
+          <IntegrationRow title="SMTP Configuration" description="Manage email server settings" onClick={() => openModal('smtp')} />
+          <IntegrationRow title="SMS Gateway" description="Twilio integration settings" onClick={() => openModal('sms')} />
+          <IntegrationRow title="API Gateway" description="External system access tokens" onClick={() => openModal('api')} />
+        </div>
+      </Card>
+
+      <div className="flex gap-3 rounded-xl border border-border bg-muted/60 p-4">
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={1.75} />
+        <div>
+          <p className="text-sm font-semibold text-foreground">Deployment Note</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+            Changes to Core Platform configurations may require a service restart for integrated modules to
+            reflect the updates completely.
+          </p>
         </div>
       </div>
 
@@ -216,20 +214,25 @@ export default function PlatformConfiguration() {
         >
           {modalSaved && <SuccessBanner compact />}
           <div className="space-y-4">
-            <Field label="SMTP Host *" value={smtpHost} onChange={setSmtpHost} />
-            <Field label="Port *" value={smtpPort} onChange={setSmtpPort} />
-            <Field label="User Name *" value={smtpUsername} onChange={setSmtpUsername} />
+            <Field label="SMTP Host *" value={smtp.host} onChange={(v) => setSmtp('host', v)} />
+            <Field label="Port *" value={smtp.port} onChange={(v) => setSmtp('port', v)} />
+            <Field label="User Name *" value={smtp.username} onChange={(v) => setSmtp('username', v)} />
             <PasswordField
               label="Password *"
-              value={smtpPassword}
-              visible={showPassword}
-              onChange={setSmtpPassword}
-              onToggle={() => setShowPassword(!showPassword)}
+              value={smtp.password}
+              visible={!!visible.smtpPassword}
+              onChange={(v) => setSmtp('password', v)}
+              onToggle={() => toggleVisible('smtpPassword')}
             />
-            <SelectField label="Encryption *" value={encryption} onChange={setEncryption} options={['TLS', 'SSL', 'None']} />
+            <SelectField
+              label="Encryption *"
+              value={smtp.encryption}
+              onChange={(v) => setSmtp('encryption', v)}
+              options={['TLS', 'SSL', 'None']}
+            />
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="From Email *" value={fromEmail} onChange={setFromEmail} />
-              <Field label="From Name *" value={fromName} onChange={setFromName} />
+              <Field label="From Email *" value={smtp.fromEmail} onChange={(v) => setSmtp('fromEmail', v)} />
+              <Field label="From Name *" value={smtp.fromName} onChange={(v) => setSmtp('fromName', v)} />
             </div>
             <TestConnectionButton />
           </div>
@@ -247,18 +250,23 @@ export default function PlatformConfiguration() {
           {modalSaved && <SuccessBanner compact />}
           <div className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Gateway Provider *" value={smsProvider} onChange={setSmsProvider} />
-              <Field label="Gateway Name *" value={smsGatewayName} onChange={setSmsGatewayName} />
+              <Field label="Gateway Provider *" value={sms.provider} onChange={(v) => setSms('provider', v)} />
+              <Field label="Gateway Name *" value={sms.gatewayName} onChange={(v) => setSms('gatewayName', v)} />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="API Base URL *" value={smsApiUrl} onChange={setSmsApiUrl} helper="Base URL for Stackly API" />
+              <Field
+                label="API Base URL *"
+                value={sms.apiUrl}
+                onChange={(v) => setSms('apiUrl', v)}
+                helper="Base URL for Stackly API"
+              />
               <PasswordField
                 label="Account SID *"
-                value={smsAccountSid}
-                visible={showSmsSid}
-                onChange={setSmsAccountSid}
-                onToggle={() => setShowSmsSid(!showSmsSid)}
+                value={sms.accountSid}
+                visible={!!visible.smsSid}
+                onChange={(v) => setSms('accountSid', v)}
+                onToggle={() => toggleVisible('smsSid')}
                 helper="Your Stackly Account SID"
               />
             </div>
@@ -266,14 +274,14 @@ export default function PlatformConfiguration() {
             <div className="grid gap-4 sm:grid-cols-2">
               <Field
                 label="From Number / Sender ID *"
-                value={smsSender}
-                onChange={setSmsSender}
+                value={sms.sender}
+                onChange={(v) => setSms('sender', v)}
                 helper="Phone number or Sender ID to send SMS from"
               />
               <Field
                 label="Connection Timeout (Seconds)"
-                value={smsTimeout}
-                onChange={setSmsTimeout}
+                value={sms.timeout}
+                onChange={(v) => setSms('timeout', v)}
                 helper="Timeout for API requests"
               />
             </div>
@@ -281,26 +289,21 @@ export default function PlatformConfiguration() {
             <div className="grid gap-4 sm:grid-cols-2">
               <PasswordField
                 label="Auth Token *"
-                value={smsAuthToken}
-                visible={showSmsToken}
-                onChange={setSmsAuthToken}
-                onToggle={() => setShowSmsToken(!showSmsToken)}
+                value={sms.authToken}
+                visible={!!visible.smsToken}
+                onChange={(v) => setSms('authToken', v)}
+                onToggle={() => toggleVisible('smsToken')}
                 helper="Your Stackly Auth Token"
               />
               <Field
                 label="Messaging Service SID (Optional) *"
-                value={smsMessagingSid}
-                onChange={setSmsMessagingSid}
+                value={sms.messagingSid}
+                onChange={(v) => setSms('messagingSid', v)}
                 helper="Stackly Messaging Service SID"
               />
             </div>
 
-            <ToggleRow
-              label="Enable Gateway"
-              checked={smsEnabled}
-              onChange={setSmsEnabled}
-              description="Enable this SMS gateway"
-            />
+            <ToggleRow label="Enable Gateway" checked={smsEnabled} onChange={setSmsEnabled} description="Enable this SMS gateway" />
 
             <NotesBox
               items={[
@@ -324,39 +327,49 @@ export default function PlatformConfiguration() {
           {modalSaved && <SuccessBanner compact />}
           <div className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Gateway Name *" value={apiGatewayName} onChange={setApiGatewayName} />
-              <Field label="Environment *" value={apiEnvironment} onChange={setApiEnvironment} />
+              <Field label="Gateway Name *" value={api.gatewayName} onChange={(v) => setApi('gatewayName', v)} />
+              <Field label="Environment *" value={api.environment} onChange={(v) => setApi('environment', v)} />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Base URL *" value={apiBaseUrl} onChange={setApiBaseUrl} helper="Base URL of the API Gateway" />
-              <Field label="API Version *" value={apiVersion} onChange={setApiVersion} helper="API version (e.g., v1, v2)" />
+              <Field
+                label="Base URL *"
+                value={api.baseUrl}
+                onChange={(v) => setApi('baseUrl', v)}
+                helper="Base URL of the API Gateway"
+              />
+              <Field
+                label="API Version *"
+                value={api.version}
+                onChange={(v) => setApi('version', v)}
+                helper="API version (e.g., v1, v2)"
+              />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Authentication Type *" value={authenticationType} onChange={setAuthenticationType} />
+              <Field label="Authentication Type *" value={api.authType} onChange={(v) => setApi('authType', v)} />
               <PasswordField
                 label="API Key *"
-                value={apiKey}
-                visible={showApiKey}
-                onChange={setApiKey}
-                onToggle={() => setShowApiKey(!showApiKey)}
+                value={api.apiKey}
+                visible={!!visible.apiKey}
+                onChange={(v) => setApi('apiKey', v)}
+                onToggle={() => toggleVisible('apiKey')}
               />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <PasswordField
                 label="API Secret *"
-                value={apiSecret}
-                visible={showApiSecret}
-                onChange={setApiSecret}
-                onToggle={() => setShowApiSecret(!showApiSecret)}
+                value={api.apiSecret}
+                visible={!!visible.apiSecret}
+                onChange={(v) => setApi('apiSecret', v)}
+                onToggle={() => toggleVisible('apiSecret')}
                 helper="Secret used to authenticate API requests"
               />
               <Field
                 label="Header Name (Optional) *"
-                value={headerName}
-                onChange={setHeaderName}
+                value={api.headerName}
+                onChange={(v) => setApi('headerName', v)}
                 helper="Custom header name for API key (if required)"
               />
             </div>
@@ -364,14 +377,14 @@ export default function PlatformConfiguration() {
             <div className="grid gap-4 sm:grid-cols-2">
               <Field
                 label="Request Timeout (Seconds) *"
-                value={requestTimeout}
-                onChange={setRequestTimeout}
+                value={api.requestTimeout}
+                onChange={(v) => setApi('requestTimeout', v)}
                 helper="Timeout for API requests"
               />
               <Field
                 label="Retry Attempts *"
-                value={retryAttempts}
-                onChange={setRetryAttempts}
+                value={api.retryAttempts}
+                onChange={(v) => setApi('retryAttempts', v)}
                 helper="Number of retry attempts on failure"
               />
             </div>
@@ -379,16 +392,11 @@ export default function PlatformConfiguration() {
             <div className="grid gap-4 sm:grid-cols-2">
               <Field
                 label="Rate Limit (requests/minute) *"
-                value={rateLimit}
-                onChange={setRateLimit}
+                value={api.rateLimit}
+                onChange={(v) => setApi('rateLimit', v)}
                 helper="Maximum number of requests allowed per minute"
               />
-              <ToggleRow
-                label="Enable Gateway"
-                checked={apiEnabled}
-                onChange={setApiEnabled}
-                description="Enable the API gateway"
-              />
+              <ToggleRow label="Enable Gateway" checked={apiEnabled} onChange={setApiEnabled} description="Enable the API gateway" />
             </div>
 
             <div className="flex items-center justify-between rounded-lg bg-accent px-4 py-3">
@@ -414,20 +422,10 @@ export default function PlatformConfiguration() {
 }
 
 function Card({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <div className={cn('rounded-xl border border-border bg-card p-5 shadow-sm', className)}>
-      {children}
-    </div>
-  )
+  return <div className={cn('rounded-xl border border-border bg-card p-5 shadow-sm', className)}>{children}</div>
 }
 
-function CardTitle({
-  icon: Icon,
-  title,
-}: {
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>
-  title: string
-}) {
+function CardTitle({ icon: Icon, title }: { icon: LucideIcon; title: string }) {
   return (
     <div className="flex items-center gap-2.5">
       <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-primary">
@@ -449,9 +447,7 @@ function SuccessBanner({ compact = false }: { compact?: boolean }) {
       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500">
         <Check className="h-3 w-3 text-white" strokeWidth={3} />
       </span>
-      <span className="text-sm font-medium text-emerald-700">
-        Your changes has been saved successfully.
-      </span>
+      <span className="text-sm font-medium text-emerald-700">Your changes has been saved successfully.</span>
     </div>
   )
 }
@@ -464,17 +460,13 @@ function Field({
 }: {
   label: string
   value: string
-  onChange?: (value: string) => void
+  onChange: (value: string) => void
   helper?: string
 }) {
   return (
     <div>
       <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{label}</label>
-      <Input
-        value={value}
-        readOnly={!onChange}
-        onChange={(event) => onChange?.(event.target.value)}
-      />
+      <Input value={value} onChange={(event) => onChange(event.target.value)} />
       {helper && <p className="mt-1.5 text-xs text-muted-foreground/80">{helper}</p>}
     </div>
   )
@@ -550,15 +542,7 @@ function SelectField({
   )
 }
 
-function IntegrationRow({
-  title,
-  description,
-  onClick,
-}: {
-  title: string
-  description: string
-  onClick: () => void
-}) {
+function IntegrationRow({ title, description, onClick }: { title: string; description: string; onClick: () => void }) {
   return (
     <div className="flex items-center justify-between gap-4 py-3.5">
       <div>
@@ -572,15 +556,7 @@ function IntegrationRow({
   )
 }
 
-function SecurityRow({
-  icon: Icon,
-  title,
-  description,
-}: {
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>
-  title: string
-  description: string
-}) {
+function SecurityRow({ icon: Icon, title, description }: { icon: LucideIcon; title: string; description: string }) {
   return (
     <div className="flex gap-3">
       <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={1.75} />
@@ -670,10 +646,7 @@ function ToggleRow({
         <button
           type="button"
           onClick={() => onChange(!checked)}
-          className={cn(
-            'relative mt-1.5 h-5 w-9 rounded-full transition-colors',
-            checked ? 'bg-primary' : 'bg-muted'
-          )}
+          className={cn('relative mt-1.5 h-5 w-9 rounded-full transition-colors', checked ? 'bg-primary' : 'bg-muted')}
         >
           <span
             className={cn(

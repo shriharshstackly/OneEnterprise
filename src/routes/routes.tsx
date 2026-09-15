@@ -10,6 +10,7 @@ import { PlaceholderPage } from '@/pages/PlaceholderPage'
 import PlatformAdministration from '@/pages/platformadministration/PlatformAdministration'
 import LicenseManagement from '@/pages/licence-management/LicenseManagement'
 import FeatureManagement from '@/pages/feature-management/FeatureManagement'
+import PlatformConfiguration from '@/pages/PlatformConfiguration/PlatformConfiguration'
 
 function placeholder(title: string) {
   return <PlaceholderPage title={title} />
@@ -44,9 +45,10 @@ export const router = createBrowserRouter([
         path: 'global-dashboard',
         element: <GlobalDashboard />,
       },
+      
       {
         path: 'platform-configuration',
-        element: placeholder('Platform Configuration'),
+        element: <PlatformConfiguration />,
       },
       {
         path: 'platform-branding',

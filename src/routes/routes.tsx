@@ -8,6 +8,7 @@ import Dashboard from '@/pages/dashboard/Dashboard'
 import GlobalDashboard from '@/pages/globaldashboard'
 import { PlaceholderPage } from '@/pages/PlaceholderPage'
 import PlatformAdministration from '@/pages/platformadministration/PlatformAdministration'
+import PlatformHealthOverview from '@/pages/platformadministration/PlatformHealthOverview'
 import LicenseManagement from '@/pages/licence-management/LicenseManagement'
 import FeatureManagement from '@/pages/feature-management/FeatureManagement'
 import PlatformConfiguration from '@/pages/PlatformConfiguration/PlatformConfiguration'
@@ -43,10 +44,13 @@ export const router = createBrowserRouter([
         element: <PlatformAdministration />,
       },
       {
+        path: 'platform-administration/health-overview',
+        element: <PlatformHealthOverview />,
+      },
+      {
         path: 'global-dashboard',
         element: <GlobalDashboard />,
       },
-      
       {
         path: 'platform-configuration',
         element: <PlatformConfiguration />,

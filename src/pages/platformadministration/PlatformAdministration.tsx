@@ -96,7 +96,7 @@ const managementGroups = [
       {
         title: 'Platform Health Overview',
         description: 'Live status per service — auth, API gateway, database, queue, storage, AI engine.',
-        href: '/platform-administration',
+          href: '/platform-administration/health-overview',
         icon: Activity,
       },
     ] satisfies ManagementCard[],

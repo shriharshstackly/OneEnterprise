@@ -13,7 +13,7 @@ function findNavLabel(pathname: string): string | null {
   }
   return null
 }
-const SUB_PAGE_LABELS: Record<string, string> = {
+const _SUB_PAGE_LABELS: Record<string, string> = {
   '/platform-administration/health-overview': 'Platform Health Overview',
 }
 

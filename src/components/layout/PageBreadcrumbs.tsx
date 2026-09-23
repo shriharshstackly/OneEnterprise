@@ -13,10 +13,6 @@ function findNavLabel(pathname: string): string | null {
   }
   return null
 }
-const _SUB_PAGE_LABELS: Record<string, string> = {
-  '/platform-administration/health-overview': 'Platform Health Overview',
-}
-
 
 /** Sits below the white top bar, in the page content area (Figma). */
 export function PageBreadcrumbs() {
